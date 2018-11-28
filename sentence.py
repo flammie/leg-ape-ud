@@ -5,7 +5,6 @@
 Support functions for handling sentences.
 """
 from token import Token
-from analysis import Analysis
 
 
 class Sentence:
@@ -24,17 +23,15 @@ class Sentence:
         apes = s.split("$")
         pos = 1
         for ape in apes:
-            ape = ape.strip('^')
-            fields = ape.split('/̈́')
-            token = Token(fields[0])
-            token.pos = pos
-            for field in fields[1:]:
-                if field.startswith('*'):
-                    pass
-                else:
-                    analysis = Analysis.fromape(field)
-                    token.analyses.append(analysis)
-            sentence.tokens.append(token)
+            ape = ape.lstrip()
+            if ape.startswith('^'):
+                token = Token.fromape(ape + '$')
+                token.pos = pos
+                sentence.tokens.append(token)
+            elif ape.strip() == '':
+                pass
+            else:
+                print("Unrecognised ape", ape)
         return sentence
 
     def printable_conllu(self):
