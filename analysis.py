@@ -32,7 +32,10 @@ class Analysis:
         Returns:
             upos in a string
         '''
-        return self.upos
+        if self.upos:
+            return self.upos
+        else:
+            return 'X'
 
     def get_lemmas(self):
         '''Finds lemmas from analyses.
@@ -40,7 +43,10 @@ class Analysis:
         Returns:
             list of strings.
         '''
-        return self.lemmas
+        if self.lemmas:
+            return self.lemmas
+        else:
+            return ['_']
 
     def get_ufeats(self):
         '''Finds UD Feats from analyses.
@@ -61,12 +67,19 @@ class Analysis:
             an analysis parsed into structured information
         '''
         a = Analysis()
+        if ape.startswith('*'):
+            a.lemmas = [ape[1:]]
+            a.upos = 'X'
+            return a
         if '#' in ape:
-            ape = ape[0:ape.find('<')] + ape[ape.rfind('#'):]
+            if ape.find('<') < ape.rfind('#'):
+                # remove tags before compound boundaries for now
+                ape = ape[0:ape.find('<')] + ape[ape.rfind('#'):]
         if '+' in ape:
             ape = ape.replace('+', '<')
         fields = [tag.strip('>') for tag in ape.split("<")]
         a.lemmas = fields[0].split('#')
+        a.weight = len(a.lemmas) - 1.0
         for f in fields[1:]:
             if f == 'n':
                 a.upos = 'NOUN'
@@ -108,6 +121,10 @@ class Analysis:
                 a.ufeats['Case'] = 'Par'
             elif f == 'gen':
                 a.ufeats['Case'] = 'Gen'
+            elif f == 'ill':
+                a.ufeats['Case'] = 'Ill'
+            elif f == 'ela':
+                a.ufeats['Case'] = 'Ela'
             elif f == 'ade':
                 a.ufeats['Case'] = 'Ade'
             elif f == 'abe':
@@ -120,6 +137,8 @@ class Analysis:
                 a.ufeats['Case'] = 'All'
             elif f == 'ess':
                 a.ufeats['Case'] = 'Ess'
+            elif f == 'tra':
+                a.ufeats['Case'] = 'Tra'
             elif f == 'act':
                 a.ufeats['Voice'] = 'Act'
             elif f == 'actv':
@@ -129,11 +148,14 @@ class Analysis:
             elif f == 'pri':
                 a.ufeats['Tense'] = 'Present'
                 a.ufeats['Mood'] = 'Ind'
+                a.ufeats['VerbForm'] = 'Fin'
             elif f == 'past':
                 a.ufeats['Tense'] = 'Past'
                 a.ufeats['Mood'] = 'Ind'
+                a.ufeats['VerbForm'] = 'Fin'
             elif f == 'impv':
                 a.ufeats['Mood'] = 'Imp'
+                a.ufeats['VerbForm'] = 'Fin'
             elif f == 'p1':
                 a.ufeats['Person'] = '1'
             elif f == 'p2':
@@ -142,25 +164,45 @@ class Analysis:
                 a.ufeats['Person'] = '3'
             elif f == 'inf':
                 a.ufeats['VerbForm'] = 'Inf'
+            elif f == 'ger':
+                a.ufeats['VerbForm'] = 'Ger'
             elif f == 'conneg':
                 a.ufeats['Conneg'] = 'Yes'
+            elif f == 'neg':
+                a.ufeats['Polarity'] = 'Neg'
             elif f == 'pers':
                 a.ufeats['PronType'] = 'Pers'
             elif f == 'dem':
                 a.ufeats['PronType'] = 'Dem'
+            elif f == 'rel':
+                a.ufeats['PronType'] = 'Rel'
             elif f == 'indef':
                 a.ufeats['PronType'] = 'Ind'
             elif f == 'ki':
                 a.ufeats['Clitic'] = 'Ki'
-            elif f == 'refl':
-                a.ufeats['Reflex'] = 'Yes'
             elif f == 'enc':
                 pass
+            elif f == 'ja':
+                pass
+            elif f == 'refl':
+                a.ufeats['Reflex'] = 'Yes'
+            elif f == 'pxsg1':
+                a.ufeats['Person[psor]'] = '1'
+                a.ufeats['Number[psor]'] = 'Sing'
+            elif f == 'pxsg2':
+                a.ufeats['Person[psor]'] = '2'
+                a.ufeats['Number[psor]'] = 'Sing'
+            elif f == 'pxsp3':
+                a.ufeats['Person[psor]'] = '3'
+            elif f == 'comp':
+                a.ufeats['Cmp'] = 'Cmp'
+            elif f == 'sup':
+                a.ufeats['Cmp'] = 'Sup'
             elif f == 'cog':
                 a.misc['PropnType'] = 'Cog'
             elif f == 'top':
                 a.misc['PropnType'] = 'Top'
-            elif f == 'interr':
+            elif f in ['interr', 'itg']:
                 a.misc['PronType'] = 'Interr'
             elif f == 'al':
                 a.misc['PropnType'] = 'Al'
@@ -168,6 +210,8 @@ class Analysis:
                 a.misc['PropnType'] = 'Ant'
             elif f == 'f':
                 a.misc['Gender'] = 'Female'
+            elif f == 'm':
+                a.misc['Gender'] = 'Male'
             else:
                 print("unknown ape", f)
                 exit(2)
@@ -181,6 +225,10 @@ class Analysis:
         miscs = []
         if self.analsurf:
             miscs += ['AnalysisForm=' + self.analsurf]
+        if self.misc:
+            miscs += [k + '=' + v for k, v in self.misc.items()]
+        if self.weight != float('inf'):
+            miscs += ['Weight=' + str(self.weight)]
         return miscs
 
     def printable_ud_misc(self):
