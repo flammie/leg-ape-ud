@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE disamparsulations SYSTEM "disamparsulations.dtd">
+<!--
+  Copyright (c) 2018 Flammie
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, version 3 of the License
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<disamparsulations version="0.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="disamparsulations.xsd"
+    xmlns:html="http://www.w3.org/1999/xhtml">
+  <evidences>
+    <!-- {{{ Single word stuffs -->
+    <!-- {{{ rare tags extra penalties -->
+    <evidence name="clitics unlikely">
+      <target>
+        <match>
+          <ufeats>
+            <ufeat name="Clitic"/>
+          </ufeats>
+        </match>
+      </target>
+      <likelihood>uncommonly</likelihood>
+    </evidence>
+    <!-- }}}
+         {{{ deps -->
+    <evidence name="puncts to nearest main verb">
+      <target>
+        <match>
+          <upos>PUNCT</upos>
+        </match>
+      </target>
+      <likelihood>usually</likelihood>
+      <depname>punct</depname>
+      <context>
+        <location>any</location>
+        <match>
+          <upos>VERB</upos>
+        </match>
+        <barrier>
+          <match>
+            <upos>PUNCT</upos>
+          </match>
+        </barrier>
+      </context>
+    </evidence>
+    <evidence name="finite verbs can be roots">
+      <target>
+        <match>
+          <upos>VERB</upos>
+          <ufeats>
+            <ufeat name="VerbForm">Fin</ufeat>
+          </ufeats>
+        </match>
+      </target>
+      <likelihood>possibly</likelihood>
+      <depname>root</depname>
+      <context>
+        <location>ROOT</location>
+      </context>
+    </evidence>
+    <evidence name="verb conjs that can ve lifted when >1 roots">
+      <target>
+        <match>
+          <upos>VERB</upos>
+          <ufeats>
+            <ufeat name="VerbForm">Fin</ufeat>
+          </ufeats>
+        </match>
+      </target>
+      <likelihood>meh</likelihood>
+      <depname>conj</depname>
+      <context>
+        <location>any</location>
+        <match>
+          <upos>VERB</upos>
+          <ufeats>
+            <ufeat name="VerbForm">Fin</ufeat>
+          </ufeats>
+        </match>
+      </context>
+    </evidence>
+    <evidence name="1sg pronoung agrees with 1sg verb">
+      <target>
+        <match>
+          <upos>PRON</upos>
+          <ufeats>
+            <ufeat name="PronType">Prs</ufeat>
+            <ufeat name="Number">Sing</ufeat>
+            <ufeat name="Person">1</ufeat>
+          </ufeats>
+        </match>
+      </target>
+      <likelihood>usually</likelihood>
+      <depname>nsubj</depname>
+      <context>
+        <location>any</location>
+        <match>
+          <upos>VERB</upos>
+          <ufeats>
+            <ufeat name="Number">Sing</ufeat>
+            <ufeat name="Person">1</ufeat>
+          </ufeats>
+        </match>
+        <barrier>
+          <match>
+            <upos>CCONJ</upos>
+            <upos>SCONJ</upos>
+            <upos>PUNCT</upos>
+          </match>
+        </barrier>
+      </context>
+    </evidence>
+    <evidence name="2sg pronoung agrees with 2sg verb">
+      <target>
+        <match>
+          <upos>PRON</upos>
+          <ufeats>
+            <ufeat name="PronType">Prs</ufeat>
+            <ufeat name="Number">Sing</ufeat>
+            <ufeat name="Person">2</ufeat>
+          </ufeats>
+        </match>
+      </target>
+      <likelihood>usually</likelihood>
+      <depname>nsubj</depname>
+      <context>
+        <location>any</location>
+        <match>
+          <upos>VERB</upos>
+          <ufeats>
+            <ufeat name="Number">Sing</ufeat>
+            <ufeat name="Person">2</ufeat>
+          </ufeats>
+        </match>
+        <barrier>
+          <match>
+            <upos>CCONJ</upos>
+            <upos>SCONJ</upos>
+            <upos>PUNCT</upos>
+          </match>
+        </barrier>
+      </context>
+    </evidence>
+    <evidence name="prons can be subjects for 3rd sg">
+      <target>
+        <match>
+          <upos>PRON</upos>
+          <ufeats>
+            <ufeat name="PronType">Dem</ufeat>
+            <ufeat name="Case">Nom</ufeat>
+            <ufeat name="Number">Sing</ufeat>
+          </ufeats>
+        </match>
+      </target>
+      <likelihood>possibly</likelihood>
+      <depname>nsubj</depname>
+      <context>
+        <location>right</location>
+        <match>
+          <upos>VERB</upos>
+          <ufeats>
+            <ufeat name="Number">Sing</ufeat>
+            <ufeat name="Person">3</ufeat>
+          </ufeats>
+        </match>
+        <barrier>
+          <match>
+            <upos>PUNCT</upos>
+            <upos>SCONJ</upos>
+            <upos>CCONJ</upos>
+          </match>
+        </barrier>
+      </context>
+    </evidence>
+    <evidence name="nouns nominativs can be subjects for 3rd sg">
+      <target>
+        <match>
+          <upos>NOUN</upos>
+          <upos>PROPN</upos>
+          <ufeats>
+            <ufeat name="Case">Nom</ufeat>
+            <ufeat name="Number">Sing</ufeat>
+          </ufeats>
+        </match>
+      </target>
+      <likelihood>possibly</likelihood>
+      <depname>nsubj</depname>
+      <context>
+        <location>right</location>
+        <match>
+          <upos>VERB</upos>
+          <ufeats>
+            <ufeat name="Number">Sing</ufeat>
+            <ufeat name="Person">3</ufeat>
+          </ufeats>
+        </match>
+        <barrier>
+          <match>
+            <upos>PUNCT</upos>
+            <upos>SCONJ</upos>
+            <upos>CCONJ</upos>
+          </match>
+        </barrier>
+      </context>
+    </evidence>
+    <evidence name="1pl pronoung agrees with 1pl verb">
+      <target>
+        <match>
+          <upos>PRON</upos>
+          <ufeats>
+            <ufeat name="PronType">Prs</ufeat>
+            <ufeat name="Number">Plur</ufeat>
+            <ufeat name="Person">1</ufeat>
+          </ufeats>
+        </match>
+      </target>
+      <likelihood>usually</likelihood>
+      <depname>nsubj</depname>
+      <context>
+        <location>any</location>
+        <match>
+          <upos>VERB</upos>
+          <ufeats>
+            <ufeat name="Number">Plur</ufeat>
+            <ufeat name="Person">1</ufeat>
+          </ufeats>
+        </match>
+        <barrier>
+          <match>
+            <upos>CCONJ</upos>
+            <upos>SCONJ</upos>
+            <upos>PUNCT</upos>
+          </match>
+        </barrier>
+      </context>
+    </evidence>
+    <evidence name="2pl pronoung agrees with 2pl verb">
+      <target>
+        <match>
+          <upos>PRON</upos>
+          <ufeats>
+            <ufeat name="PronType">Prs</ufeat>
+            <ufeat name="Number">Plur</ufeat>
+            <ufeat name="Person">2</ufeat>
+          </ufeats>
+        </match>
+      </target>
+      <likelihood>usually</likelihood>
+      <depname>nsubj</depname>
+      <context>
+        <location>any</location>
+        <match>
+          <upos>VERB</upos>
+          <ufeats>
+            <ufeat name="Number">Plur</ufeat>
+            <ufeat name="Person">2</ufeat>
+          </ufeats>
+        </match>
+        <barrier>
+          <match>
+            <upos>CCONJ</upos>
+            <upos>SCONJ</upos>
+            <upos>PUNCT</upos>
+          </match>
+        </barrier>
+      </context>
+    </evidence>
+    <evidence name="nouns nominativs can be subjects for 3rd pl">
+      <target>
+        <match>
+          <upos>NOUN</upos>
+          <upos>PROPN</upos>
+          <ufeats>
+            <ufeat name="Case">Nom</ufeat>
+            <ufeat name="Number">Plur</ufeat>
+          </ufeats>
+        </match>
+      </target>
+      <likelihood>possibly</likelihood>
+      <depname>nsubj</depname>
+      <context>
+        <location>right</location>
+        <match>
+          <upos>VERB</upos>
+          <ufeats>
+            <ufeat name="Number">Plur</ufeat>
+            <ufeat name="Person">3</ufeat>
+          </ufeats>
+        </match>
+        <barrier>
+          <match>
+            <upos>PUNCT</upos>
+            <upos>SCONJ</upos>
+            <upos>CCONJ</upos>
+          </match>
+        </barrier>
+      </context>
+    </evidence>
+    <evidence name="doubled propns are flat names">
+      <target>
+        <match>
+          <upos>PROPN</upos>
+          <ufeats>
+            <ufeat name="Case"/>
+          </ufeats>
+        </match>
+      </target>
+      <likelihood>usually</likelihood>
+      <depname>flat:name</depname>
+      <context>
+        <location>+1</location>
+        <match>
+          <upos>PROPN</upos>
+          <ufeats>
+            <ufeat name="Case"/>
+          </ufeats>
+        </match>
+      </context>
+    </evidence>
+    <evidence name="cconj coordinates its +1 often">
+      <target>
+        <match>
+          <upos>CCONJ</upos>
+        </match>
+      </target>
+      <likelihood>probably</likelihood>
+      <depname>cc</depname>
+      <context>
+        <location>+1</location>
+      </context>
+    </evidence>
+    <evidence name="sconj marks something often">
+      <target>
+        <match>
+          <upos>SCONJ</upos>
+        </match>
+      </target>
+      <likelihood>probably</likelihood>
+      <depname>mark</depname>
+      <context>
+        <location>right</location>
+        <match>
+          <upos>VERB</upos>
+        </match>
+        <barrier>
+          <match>
+            <upos>PUNCT</upos>
+          </match>
+        </barrier>
+      </context>
+    </evidence>
+  </evidences>
+</disamparsulations>

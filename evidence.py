@@ -10,8 +10,8 @@ same time. Pay no attention to the man behind the curtains and move along.
 from copy import deepcopy
 # stuff
 
-from ..token import Token
-from .matcher import Matcher
+from token import Token
+from matcher import Matcher
 
 
 class Evidence:
@@ -112,7 +112,7 @@ class Evidence:
         if self.context['location'] == 'ROOT':
             return [{"pos": 0, "a": None}]
         heads = list()
-        for head in sentence:
+        for head in sentence.tokens:
             if self.in_context(target, sentence, head):
                 for analysis in head.analyses:
                     matched = True
@@ -132,7 +132,7 @@ class Evidence:
         left = min(head['pos'], target.pos)
         right = max(head['pos'], target.pos)
         blockers = 0
-        for blocker in sentence:
+        for blocker in sentence.tokens:
             if left < blocker.pos and blocker.pos < right:
                 continue
             for anal in blocker.analyses:

@@ -11,8 +11,8 @@ same time. Pay no attention to the man behind the curtains and move along.
 import xml.etree.ElementTree
 from xml.etree.ElementTree import Element
 
-from .evidence import Evidence
-from .matcher import Matcher
+from evidence import Evidence
+from matcher import Matcher
 
 
 class Disamparsulator:
@@ -179,9 +179,7 @@ class Disamparsulator:
     def linguisticate(self, sentence: list):
         '''Not a parsing function.'''
         # for each token for each rule apply
-        for token in sentence:
-            if token.nontoken:
-                continue
+        for token in sentence.tokens:
             for rule in self.rules:
                 rule.apply(token, sentence)
             # some things can be pruned
@@ -201,18 +199,14 @@ class Disamparsulator:
         # we have to pull out multiple roots
         toproot = None
         minweight = float('inf')
-        for token in sentence:
-            if token.nontoken:
-                continue
-            analysis = token.get_best()
+        for token in sentence.tokens:
+            analysis = token.analyses[0]  # XXX: token.get_best()
             if analysis.udepname == 'root':
                 if analysis.weight < minweight:
                     toproot = analysis
                     minweight = analysis.weight
-        for token in sentence:
-            if token.nontoken:
-                continue
-            analysis = token.get_best()
+        for token in sentence.tokens:
+            analysis = token.analyses[0]  # XXX: token.get_best()
             if analysis.udepname == 'root':
                 if analysis != toproot:
                     analysis.weight += 500

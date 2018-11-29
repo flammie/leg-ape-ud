@@ -29,10 +29,10 @@ class Token:
         if not ape.startswith('^') or not ape.endswith('$'):
             print("Not a token in ape stream:", ape)
             return None
-        fields = ape.split('/')
+        fields = ape.replace('///', '@SLASH@/@SLASH@').split('/')
         token = Token(fields[0].lstrip('^'))
         for field in fields[1:]:
-            analysis = Analysis.fromape(field)
+            analysis = Analysis.fromape(field.rstrip('$'))
             token.analyses.append(analysis)
         return token
 
@@ -43,6 +43,8 @@ class Token:
         third = '_'
         ud_feats = '_'
         ud_misc = '_'
+        dephead = '_'
+        depname = '_'
         anal = self.analyses[0]
         if anal:
             upos = anal.get_upos()
@@ -50,6 +52,8 @@ class Token:
             lemmas = anal.get_lemmas()
             if lemmas:
                 lemma = '#'.join(lemmas)
+            else:
+                lemma = self.surf
             ud_feats = anal.printable_ud_feats()
             ud_misc = anal.printable_ud_misc()
             depname = anal.printable_udepname()

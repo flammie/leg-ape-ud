@@ -61,9 +61,13 @@ class Analysis:
             an analysis parsed into structured information
         '''
         a = Analysis()
+        if '#' in ape:
+            ape = ape[0:ape.find('<')] + ape[ape.rfind('#'):]
+        if '+' in ape:
+            ape = ape.replace('+', '<')
         fields = [tag.strip('>') for tag in ape.split("<")]
-        a.lemmas = fields[0].split('+')
-        for f in fields:
+        a.lemmas = fields[0].split('#')
+        for f in fields[1:]:
             if f == 'n':
                 a.upos = 'NOUN'
             elif f == 'adj':
@@ -78,12 +82,95 @@ class Analysis:
                 a.upos = 'SCONJ'
             elif f == 'ij':
                 a.upos = 'INTJ'
+            elif f == 'np':
+                a.upos = 'PROPN'
+            elif f == 'prn':
+                a.upos = 'PRON'
+            elif f == 'num':
+                a.upos = 'NUM'
             elif f == 'adv':
                 a.upos = 'ADV'
             elif f in ['post', 'pp']:
                 a.upos = 'ADP'
             elif f == 'pcle':
                 a.upos = 'PART'
+            elif f == 'punct':
+                a.upos = 'PUNCT'
+            elif f == 'sym':
+                a.upos = 'SYM'
+            elif f == 'sg':
+                a.ufeats['Number'] = 'Sing'
+            elif f == 'pl':
+                a.ufeats['Number'] = 'Plur'
+            elif f == 'nom':
+                a.ufeats['Case'] = 'Nom'
+            elif f == 'par':
+                a.ufeats['Case'] = 'Par'
+            elif f == 'gen':
+                a.ufeats['Case'] = 'Gen'
+            elif f == 'ade':
+                a.ufeats['Case'] = 'Ade'
+            elif f == 'abe':
+                a.ufeats['Case'] = 'Abe'
+            elif f == 'abl':
+                a.ufeats['Case'] = 'Abl'
+            elif f == 'ine':
+                a.ufeats['Case'] = 'Ine'
+            elif f == 'all':
+                a.ufeats['Case'] = 'All'
+            elif f == 'ess':
+                a.ufeats['Case'] = 'Ess'
+            elif f == 'act':
+                a.ufeats['Voice'] = 'Act'
+            elif f == 'actv':
+                a.ufeats['Voice'] = 'Act'
+            elif f == 'pasv':
+                a.ufeats['Voice'] = 'Pass'
+            elif f == 'pri':
+                a.ufeats['Tense'] = 'Present'
+                a.ufeats['Mood'] = 'Ind'
+            elif f == 'past':
+                a.ufeats['Tense'] = 'Past'
+                a.ufeats['Mood'] = 'Ind'
+            elif f == 'impv':
+                a.ufeats['Mood'] = 'Imp'
+            elif f == 'p1':
+                a.ufeats['Person'] = '1'
+            elif f == 'p2':
+                a.ufeats['Person'] = '2'
+            elif f == 'p3':
+                a.ufeats['Person'] = '3'
+            elif f == 'inf':
+                a.ufeats['VerbForm'] = 'Inf'
+            elif f == 'conneg':
+                a.ufeats['Conneg'] = 'Yes'
+            elif f == 'pers':
+                a.ufeats['PronType'] = 'Pers'
+            elif f == 'dem':
+                a.ufeats['PronType'] = 'Dem'
+            elif f == 'indef':
+                a.ufeats['PronType'] = 'Ind'
+            elif f == 'ki':
+                a.ufeats['Clitic'] = 'Ki'
+            elif f == 'refl':
+                a.ufeats['Reflex'] = 'Yes'
+            elif f == 'enc':
+                pass
+            elif f == 'cog':
+                a.misc['PropnType'] = 'Cog'
+            elif f == 'top':
+                a.misc['PropnType'] = 'Top'
+            elif f == 'interr':
+                a.misc['PronType'] = 'Interr'
+            elif f == 'al':
+                a.misc['PropnType'] = 'Al'
+            elif f == 'ant':
+                a.misc['PropnType'] = 'Ant'
+            elif f == 'f':
+                a.misc['Gender'] = 'Female'
+            else:
+                print("unknown ape", f)
+                exit(2)
         return a
 
     def get_ud_misc(self):

@@ -17,8 +17,10 @@ class Sentence:
         self.text = ""
 
     @staticmethod
-    def fromapestream(s: str):
-        """Creates sentence from apertium stream format string."""
+    def fromapeline(s: str):
+        """Creates sentence from apertium stream format string.
+        
+        One sentence per line."""
         sentence = Sentence()
         apes = s.split("$")
         pos = 1
@@ -28,6 +30,7 @@ class Sentence:
                 token = Token.fromape(ape + '$')
                 token.pos = pos
                 sentence.tokens.append(token)
+                pos += 1
             elif ape.strip() == '':
                 pass
             else:
@@ -41,3 +44,6 @@ class Sentence:
             conllu += "# sent-id: " + self.id + "\n"
         if self.text:
             conllu += "# text: " + self.text + "\n"
+        for token in self.tokens:
+            conllu += token.printable_conllu() + '\n'
+        return conllu

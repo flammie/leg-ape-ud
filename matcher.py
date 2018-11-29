@@ -7,7 +7,7 @@ Beta-testing a wack idea of not disambiguating and dependency parsing at the
 same time. Pay no attention to the man behind the curtains and move along.
 """
 
-from ..analysis import Analysis
+from analysis import Analysis
 
 
 class Matcher:
