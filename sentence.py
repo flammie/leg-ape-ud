@@ -19,22 +19,27 @@ class Sentence:
     @staticmethod
     def fromapeline(s: str):
         """Creates sentence from apertium stream format string.
-        
+
         One sentence per line."""
         sentence = Sentence()
         apes = s.split("$")
         pos = 1
+        text = ''
         for ape in apes:
+            if ape.startswith(' ') and '^' in ape:
+                text += ape[:ape.find('^')]
             ape = ape.lstrip()
             if ape.startswith('^'):
                 token = Token.fromape(ape + '$')
                 token.pos = pos
                 sentence.tokens.append(token)
                 pos += 1
+                text += token.surf
             elif ape.strip() == '':
                 pass
             else:
                 print("Unrecognised ape", ape)
+        sentence.text = text
         return sentence
 
     def printable_conllu(self):

@@ -60,8 +60,11 @@ def main():
     sentences = 0
     for line in options.infile:
         sent = Sentence.fromapeline(line.strip())
-        disamparsulator.linguisticate(sent)
-        print(sent.printable_conllu(), file=options.outfile)
+        if sent.text:
+            sentences += 1
+            sent.id = options.infile.name + "." + str(sentences)
+            disamparsulator.linguisticate(sent)
+            print(sent.printable_conllu(), file=options.outfile)
     cpuend = process_time()
     realend = perf_counter()
     print("Tokens:", tokens, "Sentences:", sentences,

@@ -184,6 +184,8 @@ class Analysis:
                 pass
             elif f == 'ja':
                 pass
+            elif f in ['acr', 'abbr']:
+                a.ufeats['Abbr'] = 'Yes'
             elif f == 'refl':
                 a.ufeats['Reflex'] = 'Yes'
             elif f == 'pxsg1':
