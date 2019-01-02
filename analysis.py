@@ -188,13 +188,13 @@ class Analysis:
                 a.ufeats['Abbr'] = 'Yes'
             elif f == 'refl':
                 a.ufeats['Reflex'] = 'Yes'
-            elif f == 'pxsg1':
+            elif f == 'px1sg':
                 a.ufeats['Person[psor]'] = '1'
                 a.ufeats['Number[psor]'] = 'Sing'
-            elif f == 'pxsg2':
+            elif f == 'px2sg':
                 a.ufeats['Person[psor]'] = '2'
                 a.ufeats['Number[psor]'] = 'Sing'
-            elif f == 'pxsp3':
+            elif f == 'px3sp':
                 a.ufeats['Person[psor]'] = '3'
             elif f == 'comp':
                 a.ufeats['Cmp'] = 'Cmp'
