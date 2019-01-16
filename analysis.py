@@ -133,6 +133,8 @@ class Analysis:
                 a.ufeats['Case'] = 'Abl'
             elif f == 'ine':
                 a.ufeats['Case'] = 'Ine'
+            elif f == 'ins':
+                a.ufeats['Case'] = 'Ins'
             elif f == 'all':
                 a.ufeats['Case'] = 'All'
             elif f == 'ess':
@@ -156,6 +158,9 @@ class Analysis:
             elif f == 'impv':
                 a.ufeats['Mood'] = 'Imp'
                 a.ufeats['VerbForm'] = 'Fin'
+            elif f == 'cni':
+                a.ufeats['Mood'] = 'Cnd'
+                a.ufeats['VerbForm'] = 'Fin'
             elif f == 'p1':
                 a.ufeats['Person'] = '1'
             elif f == 'p2':
@@ -171,7 +176,7 @@ class Analysis:
             elif f == 'neg':
                 a.ufeats['Polarity'] = 'Neg'
             elif f == 'pers':
-                a.ufeats['PronType'] = 'Pers'
+                a.ufeats['PronType'] = 'Prs'
             elif f == 'dem':
                 a.ufeats['PronType'] = 'Dem'
             elif f == 'rel':
@@ -194,12 +199,28 @@ class Analysis:
             elif f == 'px2sg':
                 a.ufeats['Person[psor]'] = '2'
                 a.ufeats['Number[psor]'] = 'Sing'
+            elif f == 'px3sg':
+                a.ufeats['Person[psor]'] = '3'
+                a.ufeats['Number[psor]'] = 'Sing'
             elif f == 'px3sp':
                 a.ufeats['Person[psor]'] = '3'
+            elif f == 'px1pl':
+                a.ufeats['Person[psor]'] = '1'
+                a.ufeats['Number[psor]'] = 'Plur'
+            elif f == 'px2pl':
+                a.ufeats['Person[psor]'] = '2'
+                a.ufeats['Number[psor]'] = 'Plur'
+            elif f == 'px3pl':
+                a.ufeats['Person[psor]'] = '3'
+                a.ufeats['Number[psor]'] = 'Plur'
             elif f == 'comp':
                 a.ufeats['Cmp'] = 'Cmp'
             elif f == 'sup':
                 a.ufeats['Cmp'] = 'Sup'
+            elif f == 'ord':
+                a.ufeats['NumType'] = 'Ord'
+            elif f == 'card':
+                a.ufeats['NumType'] = 'Card'
             elif f == 'cog':
                 a.misc['PropnType'] = 'Cog'
             elif f == 'top':
@@ -214,6 +235,8 @@ class Analysis:
                 a.misc['Gender'] = 'Female'
             elif f == 'm':
                 a.misc['Gender'] = 'Male'
+            elif f == 'x':
+                a.upos = 'X'
             else:
                 print("unknown ape", f)
                 exit(2)
