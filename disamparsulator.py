@@ -211,6 +211,7 @@ class Disamparsulator:
                 if analysis != toproot:
                     analysis.weight += 784
                     analysis.udepname = 'dep'
+                    analysis.udepname = 'conj'
                     analysis.udephead = 1
 
 

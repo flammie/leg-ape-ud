@@ -131,6 +131,8 @@ class Analysis:
                 a.ufeats['Case'] = 'Abe'
             elif f == 'abl':
                 a.ufeats['Case'] = 'Abl'
+            elif f == 'com':
+                a.ufeats['Case'] = 'Com'
             elif f == 'ine':
                 a.ufeats['Case'] = 'Ine'
             elif f == 'ins':
@@ -177,6 +179,8 @@ class Analysis:
                 a.ufeats['VerbForm'] = 'Inf'
             elif f == 'ger':
                 a.ufeats['VerbForm'] = 'Ger'
+            elif f in ['pp', 'pprs']:
+                a.ufeats['VerbForm'] = 'Part'
             elif f == 'conneg':
                 a.ufeats['Conneg'] = 'Yes'
             elif f == 'neg':
@@ -189,6 +193,8 @@ class Analysis:
                 a.ufeats['PronType'] = 'Rel'
             elif f == 'indef':
                 a.ufeats['PronType'] = 'Ind'
+            elif f == 'qst':
+                a.ufeats['Clitic'] = 'Ko'
             elif f == 'ki':
                 a.ufeats['Clitic'] = 'Ki'
             elif f == 'enc':
