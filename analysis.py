@@ -103,7 +103,7 @@ class Analysis:
                 a.upos = 'NUM'
             elif f == 'adv':
                 a.upos = 'ADV'
-            elif f in ['post', 'pp']:
+            elif f in ['post', 'pr']:
                 a.upos = 'ADP'
             elif f == 'pcle':
                 a.upos = 'PART'
@@ -148,7 +148,7 @@ class Analysis:
             elif f == 'pasv':
                 a.ufeats['Voice'] = 'Pass'
             elif f == 'pri':
-                a.ufeats['Tense'] = 'Present'
+                a.ufeats['Tense'] = 'Pres'
                 a.ufeats['Mood'] = 'Ind'
                 a.ufeats['VerbForm'] = 'Fin'
             elif f == 'past':
@@ -161,6 +161,12 @@ class Analysis:
             elif f == 'cni':
                 a.ufeats['Mood'] = 'Cnd'
                 a.ufeats['VerbForm'] = 'Fin'
+            elif f == 'pprs':
+                a.ufeats['Tense'] = 'Pres'
+                a.ufeats['VerbForm'] = 'Part'
+            elif f == 'pp':
+                a.ufeats['Tense'] = 'Past'
+                a.ufeats['VerbForm'] = 'Part'
             elif f == 'p1':
                 a.ufeats['Person'] = '1'
             elif f == 'p2':
