@@ -52,3 +52,14 @@ class Sentence:
         for token in self.tokens:
             conllu += token.printable_conllu() + '\n'
         return conllu
+
+    def printable_ambigonllu(self):
+        '''Create ambiguous CONLL-U-like stuff from sentence.'''
+        conllu = ""
+        if self.id:
+            conllu += "# sent-id: " + self.id + "\n"
+        if self.text:
+            conllu += "# text: " + self.text + "\n"
+        for token in self.tokens:
+            conllu += token.printable_ambigonllu() + '\n'
+        return conllu

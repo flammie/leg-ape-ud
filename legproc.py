@@ -64,7 +64,11 @@ def main():
             sentences += 1
             sent.id = options.infile.name + "." + str(sentences)
             disamparsulator.linguisticate(sent)
-            print(sent.printable_conllu(), file=options.outfile)
+            if not options.debug:
+                print(sent.printable_conllu(), file=options.outfile)
+            else:
+                print("DEBG")
+                print(sent.printable_ambigonllu(), file=options.outfile)
     cpuend = process_time()
     realend = perf_counter()
     print("Tokens:", tokens, "Sentences:", sentences,
