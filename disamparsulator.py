@@ -200,16 +200,18 @@ class Disamparsulator:
         toproot = None
         minweight = float('inf')
         for token in sentence.tokens:
-            analysis = token.analyses[0]  # XXX: token.get_best()
+            analysis = token.get_best()
             if analysis.udepname == 'root':
                 if analysis.weight < minweight:
                     toproot = analysis
                     minweight = analysis.weight
         for token in sentence.tokens:
-            analysis = token.analyses[0]  # XXX: token.get_best()
+            analysis = token.get_best()
             if analysis.udepname == 'root':
                 if analysis != toproot:
-                    analysis.weight += 500
+                    analysis.weight += 784
+                    analysis.udepname = 'dep'
+                    analysis.udephead = 1
 
 
 def main():
