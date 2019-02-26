@@ -210,6 +210,7 @@ class Disamparsulator:
             if analysis.udepname == 'root':
                 if analysis != toproot:
                     analysis.weight += 500
+                    analysis.udepname = 'conj'
 
 
 def main():

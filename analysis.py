@@ -103,7 +103,7 @@ class Analysis:
                 a.upos = 'NUM'
             elif f == 'adv':
                 a.upos = 'ADV'
-            elif f in ['post', 'pp']:
+            elif f in ['post', 'pr']:
                 a.upos = 'ADP'
             elif f == 'pcle':
                 a.upos = 'PART'
@@ -131,6 +131,8 @@ class Analysis:
                 a.ufeats['Case'] = 'Abe'
             elif f == 'abl':
                 a.ufeats['Case'] = 'Abl'
+            elif f == 'com':
+                a.ufeats['Case'] = 'Com'
             elif f == 'ine':
                 a.ufeats['Case'] = 'Ine'
             elif f == 'ins':
@@ -148,7 +150,7 @@ class Analysis:
             elif f == 'pasv':
                 a.ufeats['Voice'] = 'Pass'
             elif f == 'pri':
-                a.ufeats['Tense'] = 'Present'
+                a.ufeats['Tense'] = 'Pres'
                 a.ufeats['Mood'] = 'Ind'
                 a.ufeats['VerbForm'] = 'Fin'
             elif f == 'past':
@@ -171,6 +173,8 @@ class Analysis:
                 a.ufeats['VerbForm'] = 'Inf'
             elif f == 'ger':
                 a.ufeats['VerbForm'] = 'Ger'
+            elif f in ['pp', 'pprs']:
+                a.ufeats['VerbForm'] = 'Part'
             elif f == 'conneg':
                 a.ufeats['Conneg'] = 'Yes'
             elif f == 'neg':
@@ -183,6 +187,8 @@ class Analysis:
                 a.ufeats['PronType'] = 'Rel'
             elif f == 'indef':
                 a.ufeats['PronType'] = 'Ind'
+            elif f == 'qst':
+                a.ufeats['Clitic'] = 'Ko'
             elif f == 'ki':
                 a.ufeats['Clitic'] = 'Ki'
             elif f == 'enc':
