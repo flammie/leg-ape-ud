@@ -226,9 +226,9 @@ class Analysis:
                 a.ufeats['Person[psor]'] = '3'
                 a.ufeats['Number[psor]'] = 'Plur'
             elif f == 'comp':
-                a.ufeats['Cmp'] = 'Cmp'
+                a.ufeats['Degree'] = 'Cmp'
             elif f == 'sup':
-                a.ufeats['Cmp'] = 'Sup'
+                a.ufeats['Degree'] = 'Sup'
             elif f == 'ord':
                 a.ufeats['NumType'] = 'Ord'
             elif f == 'card':
