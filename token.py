@@ -42,7 +42,7 @@ class Token:
         upos = 'X'
         third = '_'
         ud_feats = '_'
-        ud_misc = '_'
+        ud_misc = self.printable_ud_misc()
         dephead = '_'
         depname = '_'
         anal = self.get_best()
@@ -55,7 +55,10 @@ class Token:
             else:
                 lemma = self.surf
             ud_feats = anal.printable_ud_feats()
-            ud_misc = anal.printable_ud_misc()
+            if ud_misc == '_':
+                ud_misc = anal.printable_ud_misc()
+            else:
+                ud_misc += '|' + anal.printable_ud_misc()
             depname = anal.printable_udepname()
             dephead = anal.printable_udephead()
         return "\t".join([str(self.pos), self.surf, lemma, upos, third,
@@ -69,7 +72,7 @@ class Token:
             upos = 'X'
             third = '_'
             ud_feats = '_'
-            ud_misc = '_'
+            ud_misc = self.printable_ud_misc()
             dephead = '_'
             depname = '_'
             if anal:
@@ -81,12 +84,27 @@ class Token:
                 else:
                     lemma = self.surf
                 ud_feats = anal.printable_ud_feats()
-                ud_misc = anal.printable_ud_misc()
+                if ud_misc == '_':
+                    ud_misc = anal.printable_ud_misc()
+                else:
+                    ud_misc += '|' + anal.printable_ud_misc()
                 depname = anal.printable_udepname()
                 dephead = anal.printable_udephead()
             lines += ["\t".join([str(self.pos), self.surf, lemma, upos, third,
                                  ud_feats, dephead, depname, "_", ud_misc])]
         return '\n'.join(lines)
+
+    def printable_ud_misc(self):
+        '''Format token-specific features as UD MISC field.'''
+        miscs = []
+        if self.spaceafter is False:
+            miscs += ['SpaceAfter=No']
+        if self.spacebefore is False:
+            miscs += ['SpaceBefore=No']
+        if miscs:
+            return '|'.join(miscs)
+        else:
+            return '_'
 
     def get_nbest(self, n: int):
         """Get n most likely analyses.

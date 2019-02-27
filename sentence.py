@@ -26,12 +26,21 @@ class Sentence:
         pos = 1
         text = ''
         for ape in apes:
+            spacebefore = True
             if ape.startswith(' ') and '^' in ape:
+                spacebefore = True
                 text += ape[:ape.find('^')]
+                if sentence.tokens:
+                    sentence.tokens[-1].spaceafter = True
+            else:
+                spacebefore = False
+                if sentence.tokens:
+                    sentence.tokens[-1].spaceafter = False
             ape = ape.lstrip()
             if ape.startswith('^'):
                 token = Token.fromape(ape + '$')
                 token.pos = pos
+                token.spacebefore = spacebefore
                 sentence.tokens.append(token)
                 pos += 1
                 text += token.surf
@@ -39,6 +48,7 @@ class Sentence:
                 pass
             else:
                 print("Unrecognised ape", ape)
+                exit(1)
         sentence.text = text
         return sentence
 
@@ -46,9 +56,9 @@ class Sentence:
         '''Create CONLL-U from sentence.'''
         conllu = ""
         if self.id:
-            conllu += "# sent-id: " + self.id + "\n"
+            conllu += "# sent_id = " + self.id + "\n"
         if self.text:
-            conllu += "# text: " + self.text + "\n"
+            conllu += "# text = " + self.text + "\n"
         for token in self.tokens:
             conllu += token.printable_conllu() + '\n'
         return conllu
