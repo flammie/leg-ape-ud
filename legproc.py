@@ -27,6 +27,8 @@ def main():
                    help="print statistics to STATFILE", type=FileType('w'))
     a.add_argument('--not-rules', metavar="RULEFILE", type=open, required=True,
                    help="read non-rules from RULEFILE")
+    a.add_argument('--giella', default=False, action='store_true',
+                   help="use giella instead of ape parsing")
     a.add_argument('--debug', action='store_true',
                    help="print lots of debug info while processing")
     options = a.parse_args()
@@ -59,7 +61,11 @@ def main():
     unknowns = 0
     sentences = 0
     for line in options.infile:
-        sent = Sentence.fromapeline(line.strip())
+        sent = {'text': None}
+        if options.giella:
+            sent = Sentence.fromapeline(line.strip(), reformat="giella")
+        else:
+            sent = Sentence.fromapeline(line.strip())
         if sent.text:
             sentences += 1
             sent.id = options.infile.name + "." + str(sentences)

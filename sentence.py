@@ -17,7 +17,7 @@ class Sentence:
         self.text = ""
 
     @staticmethod
-    def fromapeline(s: str):
+    def fromapeline(s: str, **kw):
         """Creates sentence from apertium stream format string.
 
         One sentence per line."""
@@ -38,7 +38,7 @@ class Sentence:
                     sentence.tokens[-1].spaceafter = False
             ape = ape.lstrip()
             if ape.startswith('^'):
-                token = Token.fromape(ape + '$')
+                token = Token.fromape(ape + '$', **kw)
                 token.pos = pos
                 token.spacebefore = spacebefore
                 sentence.tokens.append(token)

@@ -57,6 +57,199 @@ class Analysis:
         return self.ufeats
 
     @staticmethod
+    def fromgiella(giella: str):
+        '''Constructs analysis from an apertium stream format string. The
+        analyses in ape stream format are in giella form however (e.g. someone's
+        used hfst-proc on giella-langs).
+
+        Args:
+            giella     A giellatekno analysis, i.e. `lemma+tag+tag`
+
+        Returns:
+            an analysis parsed into structured information
+        '''
+        a = Analysis()
+        if giella.startswith('*'):
+            a.lemmas = [giella[1:]]
+            a.upos = 'X'
+            return a
+        if '#' in giella:
+            if giella.find('+') < giella.rfind('#'):
+                # remove tags before compound boundaries for now
+                giella = giella[0:giella.find('<')] + giella[giella.rfind('#'):]
+        fields = giella.split("+")
+        a.lemmas = fields[0].split('#')
+        a.weight = len(a.lemmas) - 1.0
+        for f in fields[1:]:
+            if f == 'N':
+                a.upos = 'NOUN'
+            elif f == 'A':
+                a.upos = 'ADJ'
+            elif f == 'V':
+                a.upos = 'VERB'
+            elif f == 'CC':
+                a.upos = 'CCONJ'
+            elif f == 'CS':
+                a.upos = 'SCONJ'
+            elif f == 'Interj':
+                a.upos = 'INTJ'
+            elif f == 'Prop':
+                a.upos = 'PROPN'
+            elif f == 'Pron':
+                a.upos = 'PRON'
+            elif f == 'Num':
+                a.upos = 'NUM'
+            elif f == 'Adv':
+                a.upos = 'ADV'
+            elif f in 'Adp':
+                a.upos = 'ADP'
+            elif f == 'Part':
+                a.upos = 'PART'
+            elif f in ['PUNCT', 'CLB']:
+                a.upos = 'PUNCT'
+            elif f == 'Sym':
+                a.upos = 'SYM'
+            elif f == 'Sg':
+                a.ufeats['Number'] = 'Sing'
+            elif f == 'Pl':
+                a.ufeats['Number'] = 'Plur'
+            elif f == 'Nom':
+                a.ufeats['Case'] = 'Nom'
+            elif f == 'Par':
+                a.ufeats['Case'] = 'Par'
+            elif f == 'Gen':
+                a.ufeats['Case'] = 'Gen'
+            elif f == 'Ill':
+                a.ufeats['Case'] = 'Ill'
+            elif f == 'Ela':
+                a.ufeats['Case'] = 'Ela'
+            elif f == 'Ade':
+                a.ufeats['Case'] = 'Ade'
+            elif f == 'Abe':
+                a.ufeats['Case'] = 'Abe'
+            elif f == 'Abl':
+                a.ufeats['Case'] = 'Abl'
+            elif f == 'Com':
+                a.ufeats['Case'] = 'Com'
+            elif f == 'Ine':
+                a.ufeats['Case'] = 'Ine'
+            elif f == 'Ins':
+                a.ufeats['Case'] = 'Ins'
+            elif f == 'All':
+                a.ufeats['Case'] = 'All'
+            elif f == 'Ess':
+                a.ufeats['Case'] = 'Ess'
+            elif f == 'Tra':
+                a.ufeats['Case'] = 'Tra'
+            elif f == 'Act':
+                a.ufeats['Voice'] = 'Act'
+            elif f == 'Pasv':
+                a.ufeats['Voice'] = 'Pass'
+            elif f == 'Ind':
+                a.ufeats['Mood'] = 'Ind'
+            elif f == 'Prs':
+                a.ufeats['Tense'] = 'Pres'
+                a.ufeats['VerbForm'] = 'Fin'
+            elif f == 'Past':
+                a.ufeats['Tense'] = 'Past'
+                a.ufeats['VerbForm'] = 'Fin'
+            elif f == 'Impv':
+                a.ufeats['Mood'] = 'Imp'
+                a.ufeats['VerbForm'] = 'Fin'
+            elif f == 'Cond':
+                a.ufeats['Mood'] = 'Cnd'
+                a.ufeats['VerbForm'] = 'Fin'
+            elif f == 'pprs':
+                a.ufeats['Tense'] = 'Pres'
+                a.ufeats['VerbForm'] = 'Part'
+            elif f == 'pp':
+                a.ufeats['Tense'] = 'Past'
+                a.ufeats['VerbForm'] = 'Part'
+            elif f == 'p1':
+                a.ufeats['Person'] = '1'
+            elif f == 'p2':
+                a.ufeats['Person'] = '2'
+            elif f == 'p3':
+                a.ufeats['Person'] = '3'
+            elif f == 'inf':
+                a.ufeats['VerbForm'] = 'Inf'
+            elif f == 'ger':
+                a.ufeats['VerbForm'] = 'Ger'
+            elif f in ['pp', 'pprs']:
+                a.ufeats['VerbForm'] = 'Part'
+            elif f == 'conneg':
+                a.ufeats['Conneg'] = 'Yes'
+            elif f == 'neg':
+                a.ufeats['Polarity'] = 'Neg'
+            elif f == 'pers':
+                a.ufeats['PronType'] = 'Prs'
+            elif f == 'dem':
+                a.ufeats['PronType'] = 'Dem'
+            elif f == 'rel':
+                a.ufeats['PronType'] = 'Rel'
+            elif f == 'indef':
+                a.ufeats['PronType'] = 'Ind'
+            elif f == 'qst':
+                a.ufeats['Clitic'] = 'Ko'
+            elif f == 'ki':
+                a.ufeats['Clitic'] = 'Ki'
+            elif f == 'enc':
+                pass
+            elif f == 'ja':
+                pass
+            elif f in ['acr', 'abbr']:
+                a.ufeats['Abbr'] = 'Yes'
+            elif f == 'refl':
+                a.ufeats['Reflex'] = 'Yes'
+            elif f == 'px1sg':
+                a.ufeats['Person[psor]'] = '1'
+                a.ufeats['Number[psor]'] = 'Sing'
+            elif f == 'px2sg':
+                a.ufeats['Person[psor]'] = '2'
+                a.ufeats['Number[psor]'] = 'Sing'
+            elif f == 'px3sg':
+                a.ufeats['Person[psor]'] = '3'
+                a.ufeats['Number[psor]'] = 'Sing'
+            elif f == 'px3sp':
+                a.ufeats['Person[psor]'] = '3'
+            elif f == 'px1pl':
+                a.ufeats['Person[psor]'] = '1'
+                a.ufeats['Number[psor]'] = 'Plur'
+            elif f == 'px2pl':
+                a.ufeats['Person[psor]'] = '2'
+                a.ufeats['Number[psor]'] = 'Plur'
+            elif f == 'px3pl':
+                a.ufeats['Person[psor]'] = '3'
+                a.ufeats['Number[psor]'] = 'Plur'
+            elif f == 'comp':
+                a.ufeats['Degree'] = 'Cmp'
+            elif f == 'sup':
+                a.ufeats['Degree'] = 'Sup'
+            elif f == 'ord':
+                a.ufeats['NumType'] = 'Ord'
+            elif f == 'card':
+                a.ufeats['NumType'] = 'Card'
+            elif f == 'cog':
+                a.misc['PropnType'] = 'Cog'
+            elif f == 'top':
+                a.misc['PropnType'] = 'Top'
+            elif f in ['interr', 'itg']:
+                a.misc['PronType'] = 'Interr'
+            elif f == 'al':
+                a.misc['PropnType'] = 'Al'
+            elif f == 'ant':
+                a.misc['PropnType'] = 'Ant'
+            elif f == 'f':
+                a.misc['Gender'] = 'Female'
+            elif f == 'm':
+                a.misc['Gender'] = 'Male'
+            elif f == 'x':
+                a.upos = 'X'
+            else:
+                print("unknown giella", f)
+                exit(2)
+        return a
+    @staticmethod
     def fromape(ape: str):
         '''Constructs analysis from an apertium stream format string.
 

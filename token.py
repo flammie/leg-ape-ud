@@ -20,19 +20,28 @@ class Token:
         self.spaceafter = False
 
     @staticmethod
-    def fromape(ape):
+    def fromape(ape, **kw):
         '''Create a token by converting apertium stream format.
 
         A token in apertium stream format is a string starting with a
         circumflex accent and ending in a dollar sign.
         '''
+        giella = False
+        if 'reformat' in kw and kw['reformat'] == 'giella':
+            giella = True
+        else:
+            giella = False
         if not ape.startswith('^') or not ape.endswith('$'):
             print("Not a token in ape stream:", ape)
             return None
         fields = ape.replace('///', '@SLASH@/@SLASH@').split('/')
         token = Token(fields[0].lstrip('^'))
         for field in fields[1:]:
-            analysis = Analysis.fromape(field.rstrip('$'))
+            analysis = Analysis()
+            if giella:
+                analysis = Analysis.fromgiella(field.rstrip('$'))
+            else:
+                analysis = Analysis.fromape(field.rstrip('$'))
             token.analyses.append(analysis)
         return token
 
