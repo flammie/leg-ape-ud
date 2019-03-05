@@ -59,8 +59,8 @@ class Analysis:
     @staticmethod
     def fromgiella(giella: str):
         '''Constructs analysis from an apertium stream format string. The
-        analyses in ape stream format are in giella form however (e.g. someone's
-        used hfst-proc on giella-langs).
+        analyses in ape stream format are in giella form however (e.g.
+        someone's used hfst-proc on giella-langs).
 
         Args:
             giella     A giellatekno analysis, i.e. `lemma+tag+tag`
@@ -76,7 +76,8 @@ class Analysis:
         if '#' in giella:
             if giella.find('+') < giella.rfind('#'):
                 # remove tags before compound boundaries for now
-                giella = giella[0:giella.find('<')] + giella[giella.rfind('#'):]
+                giella = giella[0:giella.find('<')] +\
+                        giella[giella.rfind('#'):]
         fields = giella.split("+")
         a.lemmas = fields[0].split('#')
         a.weight = len(a.lemmas) - 1.0
@@ -85,8 +86,12 @@ class Analysis:
                 a.upos = 'NOUN'
             elif f == 'A':
                 a.upos = 'ADJ'
+            elif f == 'V-Aux':
+                a.upos = 'AUX'
             elif f == 'V':
                 a.upos = 'VERB'
+            elif f == 'Conj':
+                pass
             elif f == 'CC':
                 a.upos = 'CCONJ'
             elif f == 'CS':
@@ -101,8 +106,11 @@ class Analysis:
                 a.upos = 'NUM'
             elif f == 'Adv':
                 a.upos = 'ADV'
-            elif f in 'Adp':
+            elif f == 'Adp':
                 a.upos = 'ADP'
+            elif f == 'Pr':
+                a.upos = 'ADP'
+                a.ufeats['AdpType'] = 'Pre'
             elif f == 'Part':
                 a.upos = 'PART'
             elif f in ['PUNCT', 'CLB']:
@@ -113,6 +121,8 @@ class Analysis:
                 a.ufeats['Number'] = 'Sing'
             elif f == 'Pl':
                 a.ufeats['Number'] = 'Plur'
+            elif f == 'Acc':
+                a.ufeats['Case'] = 'Acc'
             elif f == 'Nom':
                 a.ufeats['Case'] = 'Nom'
             elif f == 'Par':
@@ -150,10 +160,10 @@ class Analysis:
             elif f == 'Prs':
                 a.ufeats['Tense'] = 'Pres'
                 a.ufeats['VerbForm'] = 'Fin'
-            elif f == 'Past':
+            elif f == 'Prt':
                 a.ufeats['Tense'] = 'Past'
                 a.ufeats['VerbForm'] = 'Fin'
-            elif f == 'Impv':
+            elif f == 'Imprt':
                 a.ufeats['Mood'] = 'Imp'
                 a.ufeats['VerbForm'] = 'Fin'
             elif f == 'Cond':
@@ -162,40 +172,55 @@ class Analysis:
             elif f == 'pprs':
                 a.ufeats['Tense'] = 'Pres'
                 a.ufeats['VerbForm'] = 'Part'
-            elif f == 'pp':
+            elif f == 'PrfPrc':
                 a.ufeats['Tense'] = 'Past'
                 a.ufeats['VerbForm'] = 'Part'
-            elif f == 'p1':
+            elif f == 'Sg1':
+                a.ufeats['Number'] = 'Sing'
                 a.ufeats['Person'] = '1'
-            elif f == 'p2':
+            elif f == 'Sg2':
+                a.ufeats['Number'] = 'Sing'
                 a.ufeats['Person'] = '2'
-            elif f == 'p3':
+            elif f == 'Sg3':
+                a.ufeats['Number'] = 'Sing'
                 a.ufeats['Person'] = '3'
-            elif f == 'inf':
+            elif f == 'Pl1':
+                a.ufeats['Number'] = 'Plur'
+                a.ufeats['Person'] = '1'
+            elif f == 'Pl2':
+                a.ufeats['Number'] = 'Plur'
+                a.ufeats['Person'] = '2'
+            elif f == 'Pl3':
+                a.ufeats['Number'] = 'Plur'
+                a.ufeats['Person'] = '3'
+            elif f == 'Inf':
                 a.ufeats['VerbForm'] = 'Inf'
             elif f == 'ger':
                 a.ufeats['VerbForm'] = 'Ger'
             elif f in ['pp', 'pprs']:
                 a.ufeats['VerbForm'] = 'Part'
-            elif f == 'conneg':
-                a.ufeats['Conneg'] = 'Yes'
-            elif f == 'neg':
+            elif f == 'ConNeg':
+                a.ufeats['Connegative'] = 'Yes'
+            elif f == 'Neg':
                 a.ufeats['Polarity'] = 'Neg'
-            elif f == 'pers':
+            elif f == 'Pers':
                 a.ufeats['PronType'] = 'Prs'
-            elif f == 'dem':
+            elif f == 'Dem':
                 a.ufeats['PronType'] = 'Dem'
             elif f == 'rel':
                 a.ufeats['PronType'] = 'Rel'
             elif f == 'indef':
                 a.ufeats['PronType'] = 'Ind'
-            elif f == 'qst':
+            elif f == 'Qst':
                 a.ufeats['Clitic'] = 'Ko'
             elif f == 'ki':
                 a.ufeats['Clitic'] = 'Ki'
-            elif f == 'enc':
+            elif f in ['Apr', 'Rc', 'RcSg']:
+                # XXX?
                 pass
-            elif f == 'ja':
+            elif f == 'Der':
+                pass
+            elif f == 'Clt':
                 pass
             elif f in ['acr', 'abbr']:
                 a.ufeats['Abbr'] = 'Yes'
@@ -233,7 +258,7 @@ class Analysis:
                 a.misc['PropnType'] = 'Cog'
             elif f == 'top':
                 a.misc['PropnType'] = 'Top'
-            elif f in ['interr', 'itg']:
+            elif f == 'Interr':
                 a.misc['PronType'] = 'Interr'
             elif f == 'al':
                 a.misc['PropnType'] = 'Al'
@@ -243,12 +268,15 @@ class Analysis:
                 a.misc['Gender'] = 'Female'
             elif f == 'm':
                 a.misc['Gender'] = 'Male'
+            elif f == 'Temp':
+                a.misc['PronType'] = 'Temp'
             elif f == 'x':
                 a.upos = 'X'
             else:
                 print("unknown giella", f)
                 exit(2)
         return a
+
     @staticmethod
     def fromape(ape: str):
         '''Constructs analysis from an apertium stream format string.
@@ -375,7 +403,7 @@ class Analysis:
             elif f in ['pp', 'pprs']:
                 a.ufeats['VerbForm'] = 'Part'
             elif f == 'conneg':
-                a.ufeats['Conneg'] = 'Yes'
+                a.ufeats['Connegative'] = 'Yes'
             elif f == 'neg':
                 a.ufeats['Polarity'] = 'Neg'
             elif f == 'pers':
