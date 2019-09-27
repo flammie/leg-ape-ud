@@ -76,7 +76,7 @@ class Analysis:
         if '#' in giella:
             if giella.find('+') < giella.rfind('#'):
                 # remove tags before compound boundaries for now
-                giella = giella[0:giella.find('<')] +\
+                giella = giella[0:giella.find('+')] +\
                         giella[giella.rfind('#'):]
         fields = giella.split("+")
         a.lemmas = fields[0].split('#')
@@ -211,39 +211,54 @@ class Analysis:
                 a.ufeats['PronType'] = 'Rel'
             elif f == 'indef':
                 a.ufeats['PronType'] = 'Ind'
+            elif f == 'PrsPrc':
+                a.ufeats['VerbForm'] = 'Part'
+            elif f == 'Ger':
+                a.ufeats['VerbForm'] = 'Ger'
+            elif f == 'Pss':
+                a.ufeats['Voice'] = 'Pass'
             elif f == 'Qst':
                 a.ufeats['Clitic'] = 'Ko'
             elif f == 'ki':
                 a.ufeats['Clitic'] = 'Ki'
-            elif f in ['Apr', 'Rc', 'RcSg']:
+            elif f == 'Rel':
+                a.ufeats['PronType'] = 'Rel'
+            elif f in ['TYÄ', 'Err_Orth']:
+                a.ufeats['Guess'] = 'Yes'
+            elif f in ['Apr', 'Rc', 'RcSg', 'VR']:
                 # XXX?
                 pass
-            elif f == 'Der':
+            elif f in ['LEFT', 'RIGHT']:
+                # meh
                 pass
-            elif f == 'Clt':
+            elif f == 'Der_mine':
+                a.misc['Deriv'] = 'Mine'
+            elif f in ['Sem_Plc', 'Der_Rc', 'Clt']:
+                pass
+            elif f in ['Manner', 'Spat']:
                 pass
             elif f in ['acr', 'abbr']:
                 a.ufeats['Abbr'] = 'Yes'
-            elif f == 'refl':
+            elif f == 'Refl':
                 a.ufeats['Reflex'] = 'Yes'
-            elif f == 'px1sg':
+            elif f == 'Px1Sg':
                 a.ufeats['Person[psor]'] = '1'
                 a.ufeats['Number[psor]'] = 'Sing'
-            elif f == 'px2sg':
+            elif f == 'Px2Sg':
                 a.ufeats['Person[psor]'] = '2'
                 a.ufeats['Number[psor]'] = 'Sing'
-            elif f == 'px3sg':
+            elif f == 'Px3Sg':
                 a.ufeats['Person[psor]'] = '3'
                 a.ufeats['Number[psor]'] = 'Sing'
-            elif f == 'px3sp':
+            elif f == 'PxSP3':
                 a.ufeats['Person[psor]'] = '3'
-            elif f == 'px1pl':
+            elif f == 'Px1Pl':
                 a.ufeats['Person[psor]'] = '1'
                 a.ufeats['Number[psor]'] = 'Plur'
-            elif f == 'px2pl':
+            elif f == 'Px2Pl':
                 a.ufeats['Person[psor]'] = '2'
                 a.ufeats['Number[psor]'] = 'Plur'
-            elif f == 'px3pl':
+            elif f == 'Px3Pl':
                 a.ufeats['Person[psor]'] = '3'
                 a.ufeats['Number[psor]'] = 'Plur'
             elif f == 'comp':
@@ -297,7 +312,7 @@ class Analysis:
                 # remove tags before compound boundaries for now
                 ape = ape[0:ape.find('<')] + ape[ape.rfind('#'):]
         if '+' in ape:
-            ape = ape.replace('+', '<')
+            ape = ape.replace('+', '<+')
         fields = [tag.strip('>') for tag in ape.split("<")]
         a.lemmas = fields[0].split('#')
         a.weight = len(a.lemmas) - 1.0
@@ -378,7 +393,7 @@ class Analysis:
                 a.ufeats['Tense'] = 'Past'
                 a.ufeats['Mood'] = 'Ind'
                 a.ufeats['VerbForm'] = 'Fin'
-            elif f == 'impv':
+            elif f == 'imp':
                 a.ufeats['Mood'] = 'Imp'
                 a.ufeats['VerbForm'] = 'Fin'
             elif f == 'cni':
@@ -412,18 +427,21 @@ class Analysis:
                 a.ufeats['PronType'] = 'Dem'
             elif f == 'rel':
                 a.ufeats['PronType'] = 'Rel'
-            elif f == 'indef':
+            elif f == 'ind':
                 a.ufeats['PronType'] = 'Ind'
             elif f == 'qst':
                 a.ufeats['Clitic'] = 'Ko'
-            elif f == 'ki':
+            elif f == '+ki':
                 a.ufeats['Clitic'] = 'Ki'
             elif f == 'enc':
                 pass
-            elif f == 'ja':
+            elif f in ['+ja', '+mini']:
+                #
                 pass
             elif f in ['acr', 'abbr']:
                 a.ufeats['Abbr'] = 'Yes'
+            elif f == 'pos':
+                a.ufeats['Possessive'] = 'Yes'
             elif f == 'refl':
                 a.ufeats['Reflex'] = 'Yes'
             elif f == 'px1sg':
