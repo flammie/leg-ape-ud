@@ -46,6 +46,15 @@ class Sentence:
                 text += token.surf
             elif ape.strip() == '':
                 pass
+            elif '^' in ape:
+                print("Some wrong stuff in stream, maybe superblank?",
+                      ape[0:ape.find('^')], "skipped!")
+                token = Token.fromape(ape[ape.find('^'):] + '$', **kw)
+                token.pos = pos
+                token.spacebefore = False
+                sentence.tokens.append(token)
+                pos += 1
+                text += token.surf
             else:
                 print("Unrecognised ape", ape)
                 exit(1)
