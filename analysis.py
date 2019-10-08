@@ -76,7 +76,7 @@ class Analysis:
         if '#' in giella:
             if giella.find('+') < giella.rfind('#'):
                 # remove tags before compound boundaries for now
-                giella = giella[0:giella.find('<')] +\
+                giella = giella[0:giella.find('+')] +\
                         giella[giella.rfind('#'):]
         fields = giella.split("+")
         a.lemmas = fields[0].split('#')
@@ -106,6 +106,8 @@ class Analysis:
                 a.upos = 'NUM'
             elif f == 'Adv':
                 a.upos = 'ADV'
+            elif f == 'Det':
+                a.upos = 'DET'
             elif f == 'Adp':
                 a.upos = 'ADP'
             elif f == 'Pr':
@@ -149,14 +151,24 @@ class Analysis:
                 a.ufeats['Case'] = 'All'
             elif f == 'Ess':
                 a.ufeats['Case'] = 'Ess'
+            elif f == 'Ter':
+                a.ufeats['Case'] = 'Ter'
             elif f == 'Tra':
                 a.ufeats['Case'] = 'Tra'
             elif f == 'Act':
                 a.ufeats['Voice'] = 'Act'
-            elif f == 'Pasv':
+            elif f == 'Pss':
                 a.ufeats['Voice'] = 'Pass'
             elif f == 'Ind':
                 a.ufeats['Mood'] = 'Ind'
+            elif f == 'PrtPrc':
+                a.ufeats['Tense'] = 'Past'
+                a.ufeats['VerbForm'] = 'Part'
+            elif f == 'Ger':
+                a.ufeats['VerbForm'] = 'Ger'
+            elif f == 'PrsPrc':
+                a.ufeats['Tense'] = 'Pres'
+                a.ufeats['VerbForm'] = 'Part'
             elif f == 'Prs':
                 a.ufeats['Tense'] = 'Pres'
                 a.ufeats['VerbForm'] = 'Fin'
@@ -215,8 +227,14 @@ class Analysis:
                 a.ufeats['Clitic'] = 'Ko'
             elif f == 'ki':
                 a.ufeats['Clitic'] = 'Ki'
+            elif f == 'Err':
+                a.ufeats['Typo'] = 'Yes'
             elif f in ['Apr', 'Rc', 'RcSg']:
                 # XXX?
+                pass
+            elif f == 'Sem':
+                pass
+            elif f == 'Manner':
                 pass
             elif f == 'Der':
                 pass
@@ -235,7 +253,7 @@ class Analysis:
             elif f == 'px3sg':
                 a.ufeats['Person[psor]'] = '3'
                 a.ufeats['Number[psor]'] = 'Sing'
-            elif f == 'px3sp':
+            elif f == 'PxSP3':
                 a.ufeats['Person[psor]'] = '3'
             elif f == 'px1pl':
                 a.ufeats['Person[psor]'] = '1'
@@ -246,13 +264,13 @@ class Analysis:
             elif f == 'px3pl':
                 a.ufeats['Person[psor]'] = '3'
                 a.ufeats['Number[psor]'] = 'Plur'
-            elif f == 'comp':
+            elif f == 'Comp':
                 a.ufeats['Degree'] = 'Cmp'
-            elif f == 'sup':
+            elif f == 'Sup':
                 a.ufeats['Degree'] = 'Sup'
-            elif f == 'ord':
+            elif f == 'Ord':
                 a.ufeats['NumType'] = 'Ord'
-            elif f == 'card':
+            elif f == 'Card':
                 a.ufeats['NumType'] = 'Card'
             elif f == 'cog':
                 a.misc['PropnType'] = 'Cog'
@@ -272,6 +290,8 @@ class Analysis:
                 a.misc['PronType'] = 'Temp'
             elif f == 'x':
                 a.upos = 'X'
+            elif f in ['LEFT', 'RIGHT', 'VR']:
+                pass
             else:
                 print("unknown giella", f)
                 exit(2)
