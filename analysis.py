@@ -252,6 +252,8 @@ class Analysis:
             elif f in ['LEFT', 'RIGHT']:
                 # meh
                 pass
+            elif f == 'Der_mA':
+                a.misc['Deriv'] = 'Ma'
             elif f == 'Der_mine':
                 a.misc['Deriv'] = 'Mine'
             elif f in ['Sem_Plc', 'Der_Rc', 'Clt']:
