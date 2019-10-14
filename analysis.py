@@ -108,6 +108,8 @@ class Analysis:
                 a.upos = 'NUM'
             elif f == 'Adv':
                 a.upos = 'ADV'
+            elif f == 'Det':
+                a.upos = 'DET'
             elif f == 'Adp':
                 a.upos = 'ADP'
             elif f == 'Po':
@@ -154,14 +156,24 @@ class Analysis:
                 a.ufeats['Case'] = 'All'
             elif f == 'Ess':
                 a.ufeats['Case'] = 'Ess'
+            elif f == 'Ter':
+                a.ufeats['Case'] = 'Ter'
             elif f == 'Tra':
                 a.ufeats['Case'] = 'Tra'
             elif f == 'Act':
                 a.ufeats['Voice'] = 'Act'
-            elif f == 'Pasv':
+            elif f == 'Pss':
                 a.ufeats['Voice'] = 'Pass'
             elif f == 'Ind':
                 a.ufeats['Mood'] = 'Ind'
+            elif f == 'PrtPrc':
+                a.ufeats['Tense'] = 'Past'
+                a.ufeats['VerbForm'] = 'Part'
+            elif f == 'Ger':
+                a.ufeats['VerbForm'] = 'Ger'
+            elif f == 'PrsPrc':
+                a.ufeats['Tense'] = 'Pres'
+                a.ufeats['VerbForm'] = 'Part'
             elif f == 'Prs':
                 a.ufeats['Tense'] = 'Pres'
                 a.ufeats['VerbForm'] = 'Fin'
@@ -230,6 +242,15 @@ class Analysis:
                 a.ufeats['Clitic'] = 'Ko'
             elif f == 'ki':
                 a.ufeats['Clitic'] = 'Ki'
+            elif f == 'Err':
+                a.ufeats['Typo'] = 'Yes'
+            elif f in ['Apr', 'Rc', 'RcSg']:
+                # XXX?
+                pass
+            elif f == 'Sem':
+                pass
+            elif f == 'Manner':
+                pass
             elif f == 'Rel':
                 a.ufeats['PronType'] = 'Rel'
             elif f in ['TYÄ', 'Err_Orth']:
@@ -240,6 +261,8 @@ class Analysis:
             elif f in ['LEFT', 'RIGHT']:
                 # meh
                 pass
+            elif f == 'Der_mA':
+                a.misc['Deriv'] = 'Ma'
             elif f == 'Der_mine':
                 a.misc['Deriv'] = 'Mine'
             elif f in ['Sem_Plc', 'Der_Rc', 'Clt', 'Der_MWN', 'Der_mA']:
@@ -270,9 +293,9 @@ class Analysis:
             elif f == 'Px3Pl':
                 a.ufeats['Person[psor]'] = '3'
                 a.ufeats['Number[psor]'] = 'Plur'
-            elif f == 'comp':
+            elif f == 'Comp':
                 a.ufeats['Degree'] = 'Cmp'
-            elif f == 'sup':
+            elif f == 'Sup':
                 a.ufeats['Degree'] = 'Sup'
             elif f == 'Ord':
                 a.ufeats['NumType'] = 'Ord'
@@ -296,6 +319,8 @@ class Analysis:
                 a.misc['PronType'] = 'Temp'
             elif f == 'x':
                 a.upos = 'X'
+            elif f in ['LEFT', 'RIGHT', 'VR']:
+                pass
             else:
                 print("unknown giella", f)
                 exit(2)
