@@ -88,6 +88,8 @@ class Analysis:
                 a.upos = 'ADJ'
             elif f == 'V-Aux':
                 a.upos = 'AUX'
+            elif f == 'Det':
+                a.upos = 'DET'
             elif f == 'V':
                 a.upos = 'VERB'
             elif f == 'Conj':
@@ -108,6 +110,9 @@ class Analysis:
                 a.upos = 'ADV'
             elif f == 'Adp':
                 a.upos = 'ADP'
+            elif f == 'Po':
+                a.upos = 'ADP'
+                a.ufeats['AdpType'] = 'Post'
             elif f == 'Pr':
                 a.upos = 'ADP'
                 a.ufeats['AdpType'] = 'Pre'
@@ -193,6 +198,10 @@ class Analysis:
             elif f == 'Pl3':
                 a.ufeats['Number'] = 'Plur'
                 a.ufeats['Person'] = '3'
+            elif f == 'ScPl3':
+                # XXX
+                a.ufeats['Number'] = 'Plur'
+                a.ufeats['Person'] = '3'
             elif f == 'Inf':
                 a.ufeats['VerbForm'] = 'Inf'
             elif f == 'ger':
@@ -209,7 +218,7 @@ class Analysis:
                 a.ufeats['PronType'] = 'Dem'
             elif f == 'rel':
                 a.ufeats['PronType'] = 'Rel'
-            elif f == 'indef':
+            elif f == 'Indef':
                 a.ufeats['PronType'] = 'Ind'
             elif f == 'PrsPrc':
                 a.ufeats['VerbForm'] = 'Part'
@@ -233,7 +242,7 @@ class Analysis:
                 pass
             elif f == 'Der_mine':
                 a.misc['Deriv'] = 'Mine'
-            elif f in ['Sem_Plc', 'Der_Rc', 'Clt']:
+            elif f in ['Sem_Plc', 'Der_Rc', 'Clt', 'Der_MWN', 'Der_mA']:
                 pass
             elif f in ['Manner', 'Spat']:
                 pass
@@ -247,7 +256,7 @@ class Analysis:
             elif f == 'Px2Sg':
                 a.ufeats['Person[psor]'] = '2'
                 a.ufeats['Number[psor]'] = 'Sing'
-            elif f == 'Px3Sg':
+            elif f in ['Px3Sg', 'PxSg3']:
                 a.ufeats['Person[psor]'] = '3'
                 a.ufeats['Number[psor]'] = 'Sing'
             elif f == 'PxSP3':
@@ -265,9 +274,9 @@ class Analysis:
                 a.ufeats['Degree'] = 'Cmp'
             elif f == 'sup':
                 a.ufeats['Degree'] = 'Sup'
-            elif f == 'ord':
+            elif f == 'Ord':
                 a.ufeats['NumType'] = 'Ord'
-            elif f == 'card':
+            elif f == 'Card':
                 a.ufeats['NumType'] = 'Card'
             elif f == 'cog':
                 a.misc['PropnType'] = 'Cog'
